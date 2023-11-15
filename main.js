@@ -72,7 +72,7 @@ function generatePosts () {
     if (post.author.image) {
       profileImage = `<img class="profile-pic" src="${post.author.image}" alt="${post.author.name}">`
     } else {
-      profileImage = `<div class="profile-pic">${initials}</div>`
+      profileImage = `<div class="profile-pic-default"><span class="profile-pic-default span">${initials}</span></div>`
     }
     let postTemplate = `
       <div class="post" id="${post.id}">
@@ -94,10 +94,10 @@ function generatePosts () {
           <div class="post__footer">
               <div class="likes js-likes">
                   <div class="likes__cta">
-                      <button class="like-button  js-like-button" data-postid="${post.id}">
+                      <a class="like-button  js-like-button" data-postid="${post.id}">
                           <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                           <span class="like-button__label">Mi Piace</span>
-                      </button>
+                      </a>
                   </div>
                   <div class="likes__counter">
                       Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
@@ -111,11 +111,14 @@ function generatePosts () {
     const names = name.split(' ')
     return names.map(n => n[0]).join('')
   }
+
 }
 function clickLike () {
   const likeBtn = document.getElementsByClassName('like-button')
   for (let i = 0; i < likeBtn.length; i++) {
-    likeBtn[i].addEventListener('click', function () {
+    
+    likeBtn[i].addEventListener('click', function (event) {
+      event.preventDefault()
       const likesCounter = document.getElementById(`like-counter-${i + 1}`)
       const currentLikes = parseInt(likesCounter.innerText, 10)
       likeBtn[i].classList.toggle('like-button--liked')
